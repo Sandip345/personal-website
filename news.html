@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News & Events | Sandip Gautam</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background: var(--color-background);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      margin: 0;
+    }
+    header {
+      padding: 1rem 2rem;
+      background: var(--color-background);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+    }
+    header a.logo {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h1 {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .news-item {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .news-item h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      color: var(--color-primary);
+    }
+    .news-meta {
+      font-size: 0.85rem;
+      color: var(--color-text);
+      margin-top: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 1px solid var(--color-border);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">&larr; Home</a>
+  </header>
+  <main>
+    <h1>News & Events</h1>
+    <div id="news-list">
+      <!-- News items will be injected here -->
+    </div>
+  </main>
+  <footer>
+    © <span id="year"></span> Sandip Gautam
+  </footer>
+  <script src="js/content.js"></script>
+  <script src="js/news.js"></script>
+</body>
+</html>
