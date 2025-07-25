@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Details</title>
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Additional styling specific to the project detail page */
+    body {
+      background: var(--color-background);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      margin: 0;
+    }
+    header {
+      padding: 1rem 2rem;
+      background: var(--color-background);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header a.logo {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+    header nav a {
+      margin-left: 1rem;
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .tags {
+      margin-top: 1rem;
+    }
+    .tags span {
+      display: inline-block;
+      background: var(--color-background);
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      margin-right: 0.3rem;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">&larr; Home</a>
+  </header>
+  <main id="project-details">
+    <!-- Project details will be injected here -->
+  </main>
+  <footer>
+    <div class="container" style="padding: 1rem 0; text-align: center;">
+      &copy; <span id="year"></span> Sandip Gautam
+    </div>
+  </footer>
+  <!-- Scripts -->
+  <script src="js/content.js"></script>
+  <script src="js/project.js"></script>
+</body>
+</html>
