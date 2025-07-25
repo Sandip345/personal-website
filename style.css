@@ -1,0 +1,352 @@
+/*
+ * Main stylesheet for the personal website. The design uses modern
+ * typography, a responsive layout, and light/dark modes via CSS
+ * variables. Sections are separated with gentle background
+ * variations to improve readability. The timeline component is
+ * styled with vertical lines and dots to illustrate progression.
+ */
+
+/* Root variables allow easy theme customization */
+:root {
+  --color-primary: #004c8c;
+  --color-secondary: #007bc7;
+  --color-accent: #00a3e0;
+  --color-text: #333333;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f5f7fa;
+  --color-card: #ffffff;
+  --color-border: #e0e6ed;
+  --font-body: 'Poppins', sans-serif;
+  --transition-speed: 0.3s;
+}
+
+/* Dark mode variables override using media query; users can
+   implement dark mode switch by toggling a class on <body>. */
+.dark-mode {
+  --color-bg: #121212;
+  --color-bg-alt: #1e1e1e;
+  --color-card: #1f1f1f;
+  --color-text: #e0e0e0;
+  --color-border: #2e2e2e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+}
+
+/* Container for consistent horizontal paddings */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+/* Navigation styles */
+.navbar {
+  width: 100%;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar .logo {
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 1.4rem;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.nav-links li a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  transition: color var(--transition-speed);
+}
+.nav-links li a:hover {
+  color: var(--color-secondary);
+}
+
+/* Hamburger for mobile navigation */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: 2px;
+  transition: transform var(--transition-speed);
+  transition-property: transform, opacity;
+}
+
+/* Transform hamburger into a close icon when open */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Hero section styles */
+.hero {
+  position: relative;
+  height: 85vh;
+  background-image: url('../assets/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+}
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 1rem;
+}
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.hero-content h2 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+.hero-content p {
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background-color var(--transition-speed);
+}
+.btn:hover {
+  background-color: var(--color-primary);
+}
+
+/* Generic Section styling */
+.section {
+  padding: 4rem 0;
+}
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--color-primary);
+}
+.bg-light {
+  background-color: var(--color-bg-alt);
+}
+
+/* Timeline styling */
+.timeline {
+  position: relative;
+  margin-left: 2rem;
+  border-left: 2px solid var(--color-border);
+}
+.timeline-item {
+  position: relative;
+  padding: 1rem 1rem 1rem 2rem;
+  margin-bottom: 1.5rem;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 1rem;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+}
+.timeline-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+  color: var(--color-secondary);
+}
+.timeline-item .timeline-period {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+.timeline-item p {
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Projects grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.project-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: box-shadow var(--transition-speed);
+}
+.project-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.project-card img {
+  width: 100%;
+  display: block;
+  height: 140px;
+  object-fit: cover;
+}
+.project-card .card-content {
+  padding: 1rem;
+}
+.project-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-secondary);
+}
+.project-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.project-card .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.project-card .tags span {
+  background-color: var(--color-bg-alt);
+  color: var(--color-primary);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Skills section styling */
+.skills-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+.skill-group {
+  flex: 1 1 250px;
+  max-width: 300px;
+}
+.skill-group h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-secondary);
+}
+.skill-group ul {
+  list-style: none;
+}
+.skill-group li {
+  margin-bottom: 0.3rem;
+  position: relative;
+  padding-left: 1.2rem;
+}
+.skill-group li::before {
+  content: '\2022'; /* bullet dot */
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+}
+
+/* Contact section */
+.contact-list {
+  list-style: none;
+  font-size: 1rem;
+  line-height: 1.7;
+  padding-left: 0;
+}
+.contact-list li {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+.contact-list li .icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  background-color: var(--color-bg-alt);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-bg);
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    display: none;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .timeline {
+    margin-left: 1rem;
+  }
+  .timeline-item {
+    padding: 1rem;
+  }
+}
