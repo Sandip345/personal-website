@@ -196,8 +196,7 @@ const CONTENT = {
   description:
     "I will be traveling to Montana State University to meet with our collaborators working on the near-field dynamics of vortex-surface interactions. During the visit, I’ll be learning about the flow visualization techniques they are using and 
     observing their PIV setup to help replicate a similar system at UNH. Looking forward to the opportunity to learn from experts in the field."
-}
-
+},
  {
   title: "Oral Presentation at American Physical Society: Division of Fluid Dynamics",
   date: "November 23-25, 2025",
@@ -205,6 +204,5 @@ const CONTENT = {
   description:
     "I will be attending and presenting my research progress and findings on vortex–surface interactions at the largest Fluid Mechanics Conference to be held in Houston, Texas. Looking forward to engaging with experts in the field and discussing exciting new results."
 }
-
   ]
 };
