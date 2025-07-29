@@ -5,17 +5,16 @@
     <title>Content Manager</title>
     <!-- Include Netlify Identity widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <!-- Include Netlify CMS -->
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <!-- Netlify CMS mounts onto body -->
+    <!-- Manual init of Netlify CMS -->
     <script>
-    window.CMS_MANUAL_INIT = true;
+      window.CMS_MANUAL_INIT = true;
     </script>
     <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
     <script>
-    CMS.init();
+      CMS.init();
     </script>
   </body>
 </html>
+
