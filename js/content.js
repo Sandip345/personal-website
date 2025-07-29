@@ -23,9 +23,9 @@ const CONTENT = {
   },
   about: {
     paragraphs: [
-      "Hello! I’m Sandip, an aspiring mechanical engineer and researcher with a passion for fluid mechanics, aerospace, and experimental methods. I enjoy delving into complex problems and contributing to advances in engineering through thoughtful experimentation and simulation.",
-      "After earning my Bachelor’s degree in Aerospace Engineering at Tribhuvan University in Nepal, I am now pursuing my Master’s degree in Mechanical Engineering at the University of New Hampshire. My current research explores vortex-surface interactions in unsteady and gusting environments as part of an Air Force Office of Scientific Research project.",
-      "In addition to my research, I’ve worked on numerous academic projects ranging from UAV design to finite element analysis, and I’ve volunteered in educational initiatives promoting space sciences. These experiences have cultivated my skills in programming, simulation, and teamwork and inspired me to continue learning and sharing knowledge."
+      "Hello! I’m Sandip, an aspiring mechanical engineer and researcher with a passion for fluid mechanics, and experimental and numerical methods. I enjoy spending my time solving complex problems related to fluid and contributing to advances in engineering through thoughtful experimentation and simulation.",
+      "After earning my Bachelor’s degree in Aerospace Engineering at Tribhuvan University, Institute of Engineering, Pulchowk Campus in Nepal, I am now pursuing my fully funded master’s degree in Mechanical Engineering at the University of New Hampshire. My current research explores vortex-surface interactions in unsteady and gusting environments as part of an Air Force Office of Scientific Research project.",
+      "In addition to my research, I’ve worked on numerous academic projects ranging from partical image velocity to computationally designing the axial flow compressor, and I’ve volunteered in educational initiatives promoting space sciences, ocean sciences etc. These experiences have cultivated my skills in programming, simulation, and teamwork and inspired me to continue learning and sharing knowledge."
     ]
   },
   education: [
@@ -34,7 +34,7 @@ const CONTENT = {
       institution: "University of New Hampshire",
       location: "Durham, NH, USA",
       period: "Aug 2024 – Present",
-      details: "Graduate research assistant focusing on vortex-surface interactions in unsteady and gusting environments within the Ocean Hydrodynamics Lab. Work involves conducting fluid dynamics experiments, particle image velocimetry, and data analysis under AFOSR funding."
+      details: "Graduate research assistant focusing on vortex-surface interactions in unsteady and gusting environments within the Ocean Hydrodynamics Lab. Work involves conducting fluid dynamics experiments like free surface synthetic schlieren, thermal imagery, particle image velocimetry, and data analysis under AFOSR funding."
     },
     {
       degree: "Bachelor of Engineering in Aerospace Engineering",
