@@ -1,229 +1,241 @@
-// app.js — populate sections from content.js + nav toggle + scrollspy + dark mode + footer year
-// Safe on all pages (guards for missing elements & data)
+// app.js — populate homepage from content.js + nav toggle + scrollspy + dark mode
+// Safe on all pages. Wrapped with guards so a single error won't blank the site.
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ===== Content population (homepage) =====
-  tryPopulateHero();
-  tryRenderAbout();
-  tryRenderEducation();
-  tryRenderExperience();
-  tryRenderProjects();   // only if CONTENT.projects exists (else projects-api.js can handle)
-  tryRenderSkills();
-  tryRenderContact();
+  safeRun(tryPopulateHero);
+  safeRun(tryRenderAbout);
+  safeRun(tryRenderEducation);
+  safeRun(tryRenderExperience);
+  safeRun(tryRenderProjects); // single-column rows with full description
+  safeRun(tryRenderSkills);
+  safeRun(tryRenderContact);
 
-  // ===== Footer year =====
+  // Footer year
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ===== Mobile nav toggle =====
-  setupNavigation();
-
-  // ===== Scrollspy (only if in-page anchor nav exists) =====
-  setupScrollspy();
-
-  // ===== Dark mode (auto-insert button if missing) =====
-  setupDarkMode();
+  // UI behaviors
+  safeRun(setupNavigation);
+  safeRun(setupScrollspy);
+  safeRun(setupDarkMode);
 });
 
-/* ---------------------- POPULATE HELPERS ---------------------- */
+function safeRun(fn) {
+  try { fn && fn(); } catch (e) { console.error(fn?.name || 'fn', e); }
+}
+
+/* ---------------------- CONTENT RENDERING ---------------------- */
 
 function tryPopulateHero() {
-  if (!window.CONTENT) return;
+  const C = window.CONTENT;
+  if (!C) return;
   const name = document.getElementById('hero-name');
   const tagline = document.getElementById('hero-tagline');
   const desc = document.getElementById('hero-description');
-  if (name && CONTENT.personal?.name) name.textContent = CONTENT.personal.name;
-  if (tagline && CONTENT.personal?.tagline) tagline.textContent = CONTENT.personal.tagline;
-  if (desc && CONTENT.personal?.description) desc.textContent = CONTENT.personal.description;
+  if (name) name.textContent = C.personal?.name || name.textContent;
+  if (tagline) tagline.textContent = C.personal?.tagline || tagline.textContent;
+  if (desc) desc.textContent = C.personal?.description || desc.textContent;
 }
 
 function tryRenderAbout() {
-  if (!window.CONTENT) return;
+  const C = window.CONTENT;
+  if (!C) return;
   const container = document.getElementById('about-content');
-  if (!container || !Array.isArray(CONTENT.about?.paragraphs)) return;
+  if (!container) return;
+  const paras = Array.isArray(C.about?.paragraphs) ? C.about.paragraphs : [];
   container.innerHTML = '';
-  CONTENT.about.paragraphs.forEach(t => {
+  paras.forEach(t => {
     const p = document.createElement('p');
     p.textContent = t;
-    p.style.marginBottom = '1rem';
     container.appendChild(p);
   });
-
   // Optional CV link
-  if (CONTENT.personal?.cvLink) {
+  if (C.personal?.cvLink) {
     const a = document.createElement('a');
-    a.href = CONTENT.personal.cvLink;
+    a.href = C.personal.cvLink;
     a.textContent = 'Download CV';
     a.className = 'btn';
     a.style.display = 'inline-block';
     a.style.marginTop = '1rem';
-    a.setAttribute('download', 'Sandip_Gautam_CV.pdf');
+    a.setAttribute('download', '');
     container.appendChild(a);
   }
 }
 
 function tryRenderEducation() {
-  if (!window.CONTENT) return;
+  const C = window.CONTENT;
+  if (!C) return;
   const wrap = document.getElementById('education-list');
-  if (!wrap || !Array.isArray(CONTENT.education)) return;
+  if (!wrap) return;
+  const items = Array.isArray(C.education) ? C.education : [];
   wrap.innerHTML = '';
-  CONTENT.education.forEach(item => {
-    wrap.appendChild(buildTimelineItem(item, true));
-  });
+  items.forEach(item => wrap.appendChild(buildTimelineItem({
+    title: item.degree || '',
+    where: item.institution || item.location || '',
+    when: item.period || '',
+    details: item.details || ''
+  })));
 }
 
 function tryRenderExperience() {
-  if (!window.CONTENT) return;
+  const C = window.CONTENT;
+  if (!C) return;
   const wrap = document.getElementById('experience-list');
-  if (!wrap || !Array.isArray(CONTENT.experience)) return;
+  if (!wrap) return;
+  const items = Array.isArray(C.experience) ? C.experience : [];
   wrap.innerHTML = '';
-  CONTENT.experience.forEach(item => {
-    wrap.appendChild(buildTimelineItem(item, false));
+  items.forEach(item => {
+    const details = Array.isArray(item.details) ? item.details :
+      (item.details ? [item.details] : []);
+    wrap.appendChild(buildTimelineItem({
+      title: item.title || '',
+      where: item.organization || item.location || '',
+      when: item.period || '',
+      details
+    }));
   });
 }
 
-function buildTimelineItem(item, isEducation) {
+function buildTimelineItem({ title, where, when, details }) {
   const div = document.createElement('div');
   div.className = 'timeline-item';
 
   const h3 = document.createElement('h3');
-  h3.textContent = isEducation ? (item.degree || '') : (item.title || '');
+  h3.textContent = title;
   div.appendChild(h3);
 
   const period = document.createElement('div');
   period.className = 'timeline-period';
-  const where = isEducation ? (item.location || '') : (item.location || '');
-  const when = item.period || '';
-  period.textContent = where ? `${when} • ${where}` : when;
+  period.textContent = where ? `${when} • ${where}` : (when || '');
   div.appendChild(period);
 
-  const subtitle = document.createElement('div');
-  subtitle.style.fontStyle = 'italic';
-  subtitle.style.color = 'var(--color-text)';
-  subtitle.style.marginBottom = '0.5rem';
-  subtitle.textContent = isEducation ? (item.institution || '') : (item.organization || '');
-  if (subtitle.textContent) div.appendChild(subtitle);
-
-  const details = document.createElement('div');
-  details.className = 'details';
-  if (isEducation) {
-    if (item.details) {
-      const p = document.createElement('p');
-      p.textContent = item.details;
-      details.appendChild(p);
-    }
-  } else {
-    if (Array.isArray(item.details)) {
+  if (details) {
+    const box = document.createElement('div');
+    box.className = 'details';
+    if (Array.isArray(details)) {
       const ul = document.createElement('ul');
       ul.style.listStyle = 'disc';
       ul.style.marginLeft = '1.2rem';
-      ul.style.fontSize = '0.95rem';
-      item.details.forEach(d => {
+      details.forEach(d => {
         const li = document.createElement('li');
-        li.style.marginBottom = '0.3rem';
         li.textContent = d;
         ul.appendChild(li);
       });
-      details.appendChild(ul);
-    } else if (typeof item.details === 'string') {
+      box.appendChild(ul);
+    } else {
       const p = document.createElement('p');
-      p.textContent = item.details;
-      details.appendChild(p);
+      p.textContent = details;
+      box.appendChild(p);
     }
+    div.appendChild(box);
   }
-  if (details.childNodes.length) div.appendChild(details);
   return div;
 }
 
+/* ---------- Projects: single-column rows with FULL description ---------- */
 function tryRenderProjects() {
-  function tryRenderProjects() {
-  if (!window.CONTENT || !Array.isArray(CONTENT.projects)) return;
-  const list = document.getElementById('projects-grid');
-  if (!list) return;
+  const C = window.CONTENT;
+  if (!C) return;
+  const host = document.getElementById('projects-grid');
+  if (!host) return;
 
-  // One-column list: clear grid cards and build simple full-width rows
-  list.innerHTML = '';
-  CONTENT.projects.forEach(pj => {
+  const projects = Array.isArray(C.projects) ? C.projects : [];
+  host.innerHTML = ''; // replace any old grid cards
+
+  projects.forEach(pj => {
     const title = pj.title || pj.name || 'Untitled Project';
     const period = pj.period || '';
     const fullDesc = pj.longDescription || pj.description || '';
+    const tagsArr = Array.isArray(pj.tags) ? pj.tags : [];
 
-    const item = document.createElement('article');
-    item.className = 'project-row';
+    const art = document.createElement('article');
+    art.className = 'project-row';
 
     const h3 = document.createElement('h3');
     h3.className = 'project-row__title';
     h3.textContent = title;
-    item.appendChild(h3);
+    art.appendChild(h3);
 
     if (period) {
       const meta = document.createElement('div');
       meta.className = 'project-row__meta';
       meta.textContent = period;
-      item.appendChild(meta);
+      art.appendChild(meta);
     }
 
     if (fullDesc) {
       const p = document.createElement('p');
       p.className = 'project-row__desc';
-      p.textContent = fullDesc; // full description, no truncation
-      item.appendChild(p);
+      p.textContent = fullDesc; // full description
+      art.appendChild(p);
     }
 
-    // Optional tags
-    if (Array.isArray(pj.tags) && pj.tags.length) {
+    if (tagsArr.length) {
       const tags = document.createElement('div');
       tags.className = 'project-row__tags';
-      pj.tags.forEach(t => {
+      tagsArr.forEach(t => {
         const chip = document.createElement('span');
         chip.textContent = t;
         tags.appendChild(chip);
       });
-      item.appendChild(tags);
+      art.appendChild(tags);
     }
 
-    list.appendChild(item);
+    host.appendChild(art);
   });
 }
 
-
 function tryRenderSkills() {
-  if (!window.CONTENT) return;
+  const C = window.CONTENT;
+  if (!C) return;
   const wrap = document.getElementById('skills-content');
-  if (!wrap || !Array.isArray(CONTENT.skills)) return;
+  if (!wrap) return;
+  const groups = C.skills;
   wrap.innerHTML = '';
-  CONTENT.skills.forEach(group => {
-    const div = document.createElement('div');
-    div.className = 'skill-group';
-    const h3 = document.createElement('h3');
-    h3.textContent = group.title || '';
-    div.appendChild(h3);
-    if (Array.isArray(group.items)) {
+  // Accept { languages:[], software:[], ... } or [{title, items}]
+  if (Array.isArray(groups)) {
+    groups.forEach(g => {
+      const div = document.createElement('div');
+      div.className = 'skill-group';
+      const h3 = document.createElement('h3');
+      h3.textContent = g.title || 'Skills';
+      div.appendChild(h3);
       const ul = document.createElement('ul');
-      group.items.forEach(it => {
-        const li = document.createElement('li');
-        li.textContent = it;
-        ul.appendChild(li);
-      });
+      (g.items || []).forEach(it => { const li = document.createElement('li'); li.textContent = it; ul.appendChild(li); });
       div.appendChild(ul);
-    }
-    wrap.appendChild(div);
-  });
+      wrap.appendChild(div);
+    });
+  } else if (groups && typeof groups === 'object') {
+    const map = {
+      'Programming': groups.languages,
+      'Software': groups.software,
+      'Soft Skills': groups.softSkills,
+      'Other': groups.other
+    };
+    Object.entries(map).forEach(([title, items]) => {
+      if (!items || !items.length) return;
+      const div = document.createElement('div');
+      div.className = 'skill-group';
+      const h3 = document.createElement('h3');
+      h3.textContent = title;
+      div.appendChild(h3);
+      const ul = document.createElement('ul');
+      items.forEach(it => { const li = document.createElement('li'); li.textContent = it; ul.appendChild(li); });
+      div.appendChild(ul);
+      wrap.appendChild(div);
+    });
+  }
 }
 
 function tryRenderContact() {
-  if (!window.CONTENT) return;
+  const C = window.CONTENT;
+  if (!C) return;
   const list = document.getElementById('contact-list');
-  if (!list || !Array.isArray(CONTENT.personal?.contacts)) return;
+  if (!list) return;
+  const contacts = Array.isArray(C.personal?.contacts) ? C.personal.contacts : [];
   list.innerHTML = '';
-  CONTENT.personal.contacts.forEach(c => {
+  contacts.forEach(c => {
     const li = document.createElement('li');
-    const spanIcon = document.createElement('span');
-    spanIcon.className = 'icon';
-    // tiny icon text (can be replaced with real icons later)
-    spanIcon.textContent = c.type === 'Email' ? '✉️' : (c.type === 'Phone' ? '📞' : '📍');
-    li.appendChild(spanIcon);
-
     if (c.link) {
       const a = document.createElement('a');
       a.href = c.link;
@@ -240,7 +252,6 @@ function tryRenderContact() {
 }
 
 /* ---------------------- NAV + SCROLLSPY ---------------------- */
-
 function setupNavigation() {
   const hamburger = document.querySelector('.hamburger');
   const nav = document.querySelector('.nav-links');
@@ -251,12 +262,10 @@ function setupNavigation() {
       hamburger.classList.toggle('open');
       nav.classList.toggle('active');
     });
-    links.forEach(a =>
-      a.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        nav.classList.remove('active');
-      })
-    );
+    links.forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      nav.classList.remove('active');
+    }));
   }
 }
 
@@ -283,38 +292,27 @@ function setupScrollspy() {
     }, { rootMargin: '-20% 0px -60% 0px', threshold: [0.1, 0.5, 1] });
 
     sections.forEach(sec => io.observe(sec));
-
     const initial = location.hash?.slice(1) || (sections[0] && sections[0].id);
     if (initial) activate(initial);
   } catch (e) {
-    // Older browsers: skip scrollspy silently
-    // console.warn('Scrollspy disabled:', e);
+    // IntersectionObserver unsupported – skip silently
   }
 }
 
 /* ------------------------- DARK MODE ------------------------- */
-
 function setupDarkMode() {
   // Insert button if missing
   let btn = document.getElementById('dark-mode-toggle');
-  const header = document.querySelector('header, .navbar .container, .navbar');
+  const header = document.querySelector('header');
   if (!btn && header) {
     btn = document.createElement('button');
     btn.id = 'dark-mode-toggle';
     btn.type = 'button';
     btn.setAttribute('aria-label', 'Toggle dark mode');
     btn.textContent = '🌙';
-    // place on the right of header/navbar
-    if (header.classList.contains('container')) {
-      header.appendChild(btn);
-    } else if (header.classList.contains('navbar')) {
-      header.querySelector('.container')?.appendChild(btn);
-    } else {
-      header.appendChild(btn);
-    }
+    header.appendChild(btn);
   }
 
-  // Apply saved preference
   const saved = localStorage.getItem('theme');
   if (saved === 'dark') {
     document.body.classList.add('dark-mode');
