@@ -136,70 +136,56 @@ function buildTimelineItem(item, isEducation) {
 }
 
 function tryRenderProjects() {
-  // If CONTENT.projects exists, render; else leave to projects-api.js (which fetches from repo)
+  function tryRenderProjects() {
   if (!window.CONTENT || !Array.isArray(CONTENT.projects)) return;
-  const grid = document.getElementById('projects-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
+  const list = document.getElementById('projects-grid');
+  if (!list) return;
 
+  // One-column list: clear grid cards and build simple full-width rows
+  list.innerHTML = '';
   CONTENT.projects.forEach(pj => {
-    const card = document.createElement('div');
-    card.className = 'project-card';
+    const title = pj.title || pj.name || 'Untitled Project';
+    const period = pj.period || '';
+    const fullDesc = pj.longDescription || pj.description || '';
 
-    if (pj.image) {
-      const img = document.createElement('img');
-      img.src = pj.image;
-      img.alt = pj.title || 'Project image';
-      card.appendChild(img);
-    }
-
-    const content = document.createElement('div');
-    content.className = 'card-content';
+    const item = document.createElement('article');
+    item.className = 'project-row';
 
     const h3 = document.createElement('h3');
-    h3.textContent = pj.title || 'Untitled Project';
-    content.appendChild(h3);
+    h3.className = 'project-row__title';
+    h3.textContent = title;
+    item.appendChild(h3);
 
-    if (pj.period) {
-      const small = document.createElement('div');
-      small.className = 'news-meta';
-      small.style.marginBottom = '.5rem';
-      small.textContent = pj.period;
-      content.appendChild(small);
+    if (period) {
+      const meta = document.createElement('div');
+      meta.className = 'project-row__meta';
+      meta.textContent = period;
+      item.appendChild(meta);
     }
 
-    if (pj.description) {
+    if (fullDesc) {
       const p = document.createElement('p');
-      p.textContent = pj.description;
-      content.appendChild(p);
+      p.className = 'project-row__desc';
+      p.textContent = fullDesc; // full description, no truncation
+      item.appendChild(p);
     }
 
+    // Optional tags
     if (Array.isArray(pj.tags) && pj.tags.length) {
       const tags = document.createElement('div');
-      tags.className = 'tags';
+      tags.className = 'project-row__tags';
       pj.tags.forEach(t => {
-        const s = document.createElement('span');
-        s.textContent = t;
-        tags.appendChild(s);
+        const chip = document.createElement('span');
+        chip.textContent = t;
+        tags.appendChild(chip);
       });
-      content.appendChild(tags);
+      item.appendChild(tags);
     }
 
-    // Optional link
-    if (pj.link) {
-      const a = document.createElement('a');
-      a.href = pj.link;
-      a.className = 'btn';
-      a.style.marginTop = '0.75rem';
-      a.textContent = 'View';
-      a.target = '_blank';
-      content.appendChild(a);
-    }
-
-    card.appendChild(content);
-    grid.appendChild(card);
+    list.appendChild(item);
   });
 }
+
 
 function tryRenderSkills() {
   if (!window.CONTENT) return;
