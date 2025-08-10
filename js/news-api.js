@@ -1,69 +1,106 @@
-// news-api.js — fetches markdown news files from GitHub, parses front matter, and renders list
+// news-api.js — fetches markdown news files from GitHub, parses YAML front matter (incl. multiline),
+// and renders a list with title, date, location, and description/body preview.
 
 async function fetchNewsList() {
   const endpoint = 'https://api.github.com/repos/Sandip345/personal-website/contents/content/news';
   const response = await fetch(endpoint);
-  if (!response.ok) {
-    throw new Error(`GitHub API error ${response.status}: ${await response.text()}`);
-  }
+  if (!response.ok) throw new Error(`GitHub API error ${response.status}: ${await response.text()}`);
   const data = await response.json();
-  return (Array.isArray(data) ? data : []).filter(item => item.name && item.name.endsWith('.md'));
+  return (Array.isArray(data) ? data : []).filter(it => it.name && it.name.endsWith('.md'));
 }
 
+/** Read a block scalar (>, >-, |, |-) starting at lines[i+1] with indentation > baseIndent */
+function readBlockScalar(lines, i, baseIndent, style) {
+  let j = i + 1;
+  let chunks = [];
+  while (j < lines.length) {
+    const raw = lines[j];
+    if (!raw.trim()) { chunks.push(''); j++; continue; }
+    const indent = raw.match(/^\s*/)[0].length;
+    if (indent <= baseIndent) break;
+    chunks.push(raw.slice(baseIndent + 1)); // remove one extra indent level
+    j++;
+  }
+  const chomp = style.endsWith('-');     // >- or |-
+  const isFolded = style.startsWith('>');
+  let text;
+  if (isFolded) {
+    // Fold: join lines with spaces, but keep blank lines
+    text = chunks
+      .join('\n')
+      .split(/\n{2,}/)
+      .map(par => par.replace(/\n/g, ' '))
+      .join('\n\n');
+  } else {
+    // Literal: preserve newlines
+    text = chunks.join('\n');
+  }
+  if (chomp) text = text.replace(/\n+$/, '');
+  return { value: text, nextIndex: j - 1 };
+}
+
+/** Minimal YAML front-matter parser with multiline scalar support */
 function parseFrontMatter(text) {
   const delimiter = '---';
   const parts = text.split(delimiter);
   if (parts.length < 3) return {};
-
   const yaml = parts[1];
-  const body = parts.slice(2).join(delimiter);
+  const body = parts.slice(2).join(delimiter).replace(/^\s+/, '');
 
-  const lines = yaml
-    .split('\n')
-    .map(l => l.trim())
-    .filter(l => l.length && !l.startsWith('#'));
+  const lines = yaml.replace(/\r\n?/g, '\n').split('\n');
+  const meta = {};
 
-  const metadata = {};
-  for (const line of lines) {
-    const idx = line.indexOf(':');
-    if (idx === -1) continue;
-    const key = line.slice(0, idx).trim();
-    let value = line.slice(idx + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+
+    const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+    if (!m) continue;
+
+    const key = m[1].trim();
+    let value = (m[2] ?? '').trim();
+
+    // Multiline scalar?
+    if (value === '' || value === '>' || value === '>-' || value === '|' || value === '|-') {
+      const baseIndent = line.match(/^\s*/)[0].length;
+      const style = value || '>'; // treat empty after ":" as folded by default
+      const blk = readBlockScalar(lines, i, baseIndent, style);
+      value = blk.value;
+      i = blk.nextIndex;
+    } else {
+      // Strip surrounding quotes if present
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
     }
-    metadata[key] = value;
+
+    meta[key] = value;
   }
-  metadata.body = body.trim();
-  return metadata;
+
+  meta.body = body.trim();
+  return meta;
 }
 
 function parseDateLoose(input) {
   if (!input || typeof input !== 'string') return null;
-  const isoMatch = input.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (isoMatch) {
+  const iso = input.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (iso) {
     const d = new Date(input);
-    return isNaN(d.getTime()) ? null : d;
+    return isNaN(d) ? null : d;
   }
   const t = Date.parse(input);
-  if (!isNaN(t)) return new Date(t);
-  return null;
+  return isNaN(t) ? null : new Date(t);
 }
 
 function formatDisplayDate(d) {
-  if (!(d instanceof Date) || isNaN(d.getTime())) return '';
-  const fmt = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  return fmt.format(d);
+  if (!(d instanceof Date) || isNaN(d)) return '';
+  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(d);
 }
 
-// Helper to shorten long text to first 2–3 sentences
+// Shorten long text to first 3 sentences
 function getPreviewText(text, maxSentences = 3) {
   if (!text) return '';
-  const sentences = text
-    .replace(/\s+/g, ' ')
-    .split(/(?<=[.!?])\s+/)
-    .filter(Boolean);
+  const sentences = text.replace(/\s+/g, ' ').split(/(?<=[.!?])\s+/).filter(Boolean);
   return sentences.slice(0, maxSentences).join(' ');
 }
 
@@ -74,8 +111,8 @@ async function getNewsItems() {
     try {
       const resp = await fetch(file.download_url);
       if (!resp.ok) throw new Error(`Failed to fetch ${file.name}: ${resp.status}`);
-      const text = await resp.text();
-      const meta = parseFrontMatter(text);
+      const raw = await resp.text();
+      const meta = parseFrontMatter(raw);
 
       const rawDate = (meta.date || '').trim();
       const parsedDate = parseDateLoose(rawDate);
@@ -84,7 +121,7 @@ async function getNewsItems() {
       items.push({
         slug: file.name.replace(/\.md$/i, ''),
         title: (meta.title || '').trim(),
-        description: (meta.description || '').trim(),
+        description: (meta.description || '').trim(), // now supports multi-line YAML
         location: (meta.location || '').trim(),
         date: displayDate,
         body: meta.body || '',
@@ -133,7 +170,6 @@ function renderNews(news) {
       article.appendChild(meta);
     }
 
-    // Choose description or body preview
     const preview = item.description && item.description.length > 10
       ? item.description
       : getPreviewText(item.body);
@@ -156,10 +192,7 @@ async function initNews() {
     console.error('Error loading news:', err);
     const list = document.getElementById('news-list');
     if (list) {
-      list.innerHTML = `
-        <p>Sorry, we couldn’t load the news right now.</p>
-        <pre style="white-space:pre-wrap;font-size:.85rem;">${String(err)}</pre>
-      `;
+      list.innerHTML = `<p>Sorry, we couldn’t load the news right now.</p>`;
     }
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
