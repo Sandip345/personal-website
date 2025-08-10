@@ -6,7 +6,7 @@ description: I will be traveling to Montana State University to meet with our
   techniques they are using and observing their PIV setup to help replicate a
   similar system at UNH. Looking forward to the opportunity to learn from
   experts in the field.
-date: July 29, 2025
+date: August 3, 2025
 location: Bozeman, Montana, USA
 ---
 T﻿o be added
