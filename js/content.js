@@ -8,7 +8,7 @@
  * use "Present" as the end date.
  */
 
-const CONTENT = {
+window.CONTENT = {
   personal: {
     name: "Sandip Gautam",
     tagline: "Graduate Research Assistant | Mechanical Engineering",
@@ -65,7 +65,7 @@ const CONTENT = {
         "Designed and built a functional towing tank for PIV measurements equipped with a load cell to acquire accurate lift data for validating PIV results.",
         "Executed particle image velocimetry measurements on a flat plate at a Reynolds number of 6,040 using Python for dynamic airfoil masking and image processing through PIVlab.",
         "Performed CFD simulations of a flat plate to study the laminar separation bubble using Ansys Fluent, replicating experimental conditions.",
-        "Conducted a qualitative analysis of error sources in a cost‑effective PIV setup."
+        "Conducted a qualitative analysis of error sources in a cost-effective PIV setup."
       ]
     },
     {
@@ -106,7 +106,7 @@ const CONTENT = {
       // Placeholder image – replace this with your own photo in the images folder
       image: "images/placeholder.png",
       longDescription:
-        "Designed a fixed‑wing battery‑powered UAV for power line inspection in Nepal. The project included preliminary aerodynamic sizing, stability and control analyses, structural considerations, and mission planning. Developed Python scripts to evaluate aerodynamic performance across flight envelopes and produced a comprehensive poster presentation detailing the UAV's capabilities and potential impact on power line maintenance."
+        "Designed a fixed-wing battery-powered UAV for power line inspection in Nepal. The project included preliminary aerodynamic sizing, stability and control analyses, structural considerations, and mission planning. Developed Python scripts to evaluate aerodynamic performance across flight envelopes and produced a comprehensive poster presentation detailing the UAV's capabilities and potential impact on power line maintenance."
     },
     {
       name: "Finite Element Heat Conduction",
@@ -116,7 +116,7 @@ const CONTENT = {
       tags: ["MATLAB", "Finite Element", "Heat Transfer"],
       image: "images/placeholder.png",
       longDescription:
-        "Enhanced existing MATLAB code for two‑dimensional heat conduction using the finite element method. Added functionality to account for internal heat sources and included routines to compute both temperature distribution and heat flux through the domain. The project improved numerical stability and provided additional visualization outputs, making the tool more versatile for thermal analysis."
+        "Enhanced existing MATLAB code for two-dimensional heat conduction using the finite element method. Added functionality to account for internal heat sources and included routines to compute both temperature distribution and heat flux through the domain. The project improved numerical stability and provided additional visualization outputs, making the tool more versatile for thermal analysis."
     },
     {
       name: "Axial Flow Compressor Design",
@@ -126,7 +126,7 @@ const CONTENT = {
       tags: ["CFD", "CATIA", "Ansys"],
       image: "images/placeholder.png",
       longDescription:
-        "Gained hands‑on experience designing and analyzing a subsonic axial flow compressor. Used CATIA V5 to model blade and hub geometry, generated high‑quality meshes with Ansys TurboGrid, and performed CFD simulations in Ansys CFX to evaluate compressor performance metrics such as pressure ratio and efficiency. Learned how blade shape affects flow separation and optimized design parameters to meet target performance."
+        "Gained hands-on experience designing and analyzing a subsonic axial flow compressor. Used CATIA V5 to model blade and hub geometry, generated high-quality meshes with Ansys TurboGrid, and performed CFD simulations in Ansys CFX to evaluate compressor performance metrics such as pressure ratio and efficiency. Learned how blade shape affects flow separation and optimized design parameters to meet target performance."
     },
     {
       name: "Lift & Drag Data Acquisition",
@@ -146,17 +146,17 @@ const CONTENT = {
       tags: ["Mechanical Design", "CATIA"],
       image: "images/placeholder.png",
       longDescription:
-        "Designed a mobile trolley system to facilitate safe handling and transport of aircraft exhaust stack pipes. Performed structural analysis and ergonomics assessments using CATIA V5 to ensure the trolley could support the required loads while remaining easy to maneuver. Considered manufacturing constraints and proposed a cost‑effective fabrication plan."
+        "Designed a mobile trolley system to facilitate safe handling and transport of aircraft exhaust stack pipes. Performed structural analysis and ergonomics assessments using CATIA V5 to ensure the trolley could support the required loads while remaining easy to maneuver. Considered manufacturing constraints and proposed a cost-effective fabrication plan."
     },
     {
       name: "Quadcopter Design & Fabrication",
       period: "2020",
       description:
-        "Built a quadcopter using an Arduino Uno microcontroller, implementing PID control for roll and pitch stabilization for demonstration at MechTRIX‑X.",
+        "Built a quadcopter using an Arduino Uno microcontroller, implementing PID control for roll and pitch stabilization for demonstration at MechTRIX-X.",
       tags: ["Arduino", "Control Systems", "PID"],
       image: "images/placeholder.png",
       longDescription:
-        "Constructed a quadcopter using an Arduino Uno microcontroller and off‑the‑shelf components. Implemented PID control algorithms for roll and pitch stabilization and tuned parameters to achieve steady hover. Demonstrated the quadcopter’s capabilities at MechTRIX‑X, highlighting the integration of embedded programming, control theory, and mechanical design."
+        "Constructed a quadcopter using an Arduino Uno microcontroller and off-the-shelf components. Implemented PID control algorithms for roll and pitch stabilization and tuned parameters to achieve steady hover. Demonstrated the quadcopter’s capabilities at MechTRIX-X, highlighting the integration of embedded programming, control theory, and mechanical design."
     }
   ],
   skills: {
@@ -176,33 +176,31 @@ const CONTENT = {
       location: "University of New Hampshire",
       date: "March 12, 2025"
     }
-  ]
-  ,
+  ],
   // News and upcoming events. Each entry should include a title, date and
   // description. You can add more items or edit existing ones to update
   // your news page without touching the HTML structure.
   news: [
-  {
-    title: "Presenting at the Rocky mountain fluid symposium",
-    date: "August 8, 2025",
-    location: "University of Colorado, Boulder",
-    description:
-      "I will be attending and presenting my research progress and findings on vortex–surface interactions at the Fluid Mechanics Conference in Boulder, Colorado. Looking forward to engaging with experts in the field and discussing exciting new results."
-  },
-  {
-    title: "Visiting Research Collaborators at Montana State University",
-    date: "August 3, 2025",
-    location: "Bozeman, Montana, USA",
-    description:
-      "I will be traveling to Montana State University to meet with our collaborators working on the near-field dynamics of vortex-surface interactions. During the visit, I’ll be learning about the flow visualization techniques they are using and observing their PIV setup to help replicate a similar system at UNH. Looking forward to the opportunity to learn from experts in the field."
-  },
-  {
-    title: "Oral Presentation at American Physical Society: Division of Fluid Dynamics",
-    date: "November 23-25, 2025",
-    location: "Houston, Texas, USA",
-    description:
-      "I will be attending and presenting my research progress and findings on vortex–surface interactions at the largest Fluid Mechanics Conference to be held in Houston, Texas. Looking forward to engaging with experts in the field and discussing exciting new results."
-  }
-]
-
+    {
+      title: "Presenting at the Rocky mountain fluid symposium",
+      date: "August 8, 2025",
+      location: "University of Colorado, Boulder",
+      description:
+        "I will be attending and presenting my research progress and findings on vortex–surface interactions at the Fluid Mechanics Conference in Boulder, Colorado. Looking forward to engaging with experts in the field and discussing exciting new results."
+    },
+    {
+      title: "Visiting Research Collaborators at Montana State University",
+      date: "August 3, 2025",
+      location: "Bozeman, Montana, USA",
+      description:
+        "I will be traveling to Montana State University to meet with our collaborators working on the near-field dynamics of vortex-surface interactions. During the visit, I’ll be learning about the flow visualization techniques they are using and observing their PIV setup to help replicate a similar system at UNH. Looking forward to the opportunity to learn from experts in the field."
+    },
+    {
+      title: "Oral Presentation at American Physical Society: Division of Fluid Dynamics",
+      date: "November 23-25, 2025",
+      location: "Houston, Texas, USA",
+      description:
+        "I will be attending and presenting my research progress and findings on vortex–surface interactions at the largest Fluid Mechanics Conference to be held in Houston, Texas. Looking forward to engaging with experts in the field and discussing exciting new results."
+    }
+  ]
 };
