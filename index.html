@@ -2,124 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Personal website for Sandip Gautam, graduate researcher and mechanical engineer." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sandip Gautam | Personal Website</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <!-- Site styles -->
-  <link rel="stylesheet" href="css/style.css" />
-  <button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
-  <link rel="icon" href="images/placeholder.png" type="image/png" />
-  <meta property="og:title" content="Sandip Gautam | Personal Website">
-  <meta property="og:description" content="Graduate researcher in fluid dynamics. Projects, publications, news & contact.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://sandipgtm.com.np/">
-  <meta property="og:image" content="images/placeholder.png">
 
+  <!-- SEO / social preview -->
+  <meta name="description" content="Graduate researcher in fluid dynamics — projects, experience, news, and contact." />
+  <meta property="og:title" content="Sandip Gautam | Personal Website" />
+  <meta property="og:description" content="Graduate researcher in fluid dynamics — projects, experience, news, and contact." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sandipgtm.com.np/" />
+  <meta property="og:image" content="images/placeholder.png" />
+  <link rel="icon" href="images/placeholder.png" type="image/png" />
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <nav class="navbar">
-    <div class="container">
-      <a href="#home" class="logo">Sandip Gautam</a>
-      <button class="hamburger" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="news.html">News</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
-  <!-- Add this inside <header>, near your nav -->
-<button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
 
+  <!-- Header / Nav -->
+  <header>
+    <a href="#home" class="logo">Sandip Gautam</a>
 
-  <!-- Hero Section -->
-  <header id="home" class="hero">
-    <div class="hero-overlay">
-      <div class="container hero-content">
-        <h1 id="hero-name"></h1>
-        <h2 id="hero-tagline"></h2>
-        <p id="hero-description"></p>
-        <a href="#contact" class="btn">Get in Touch</a>
-      </div>
-    </div>
+    <!-- Hamburger for mobile -->
+    <button class="hamburger" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- In-page nav; scrollspy will highlight current section -->
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="news.html">News</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <!-- Dark mode button is auto-inserted by app.js if missing -->
   </header>
 
   <main>
-    <!-- About Section -->
-    <section id="about" class="section">
-      <div class="container">
-        <h2 class="section-title">About Me</h2>
-        <div id="about-content"></div>
-      </div>
+    <!-- Hero -->
+    <section id="home">
+      <h1 id="hero-name" class="section-title">Your Name</h1>
+      <h2 id="hero-tagline">Your tagline</h2>
+      <p id="hero-description">Short introduction goes here.</p>
+      <p><a class="btn" href="#contact">Get in touch</a></p>
     </section>
 
-    <!-- Education Section -->
-    <section id="education" class="section bg-light">
-      <div class="container">
-        <h2 class="section-title">Education</h2>
-        <div id="education-list" class="timeline"></div>
-      </div>
+    <!-- About -->
+    <section id="about">
+      <h2 class="section-title">About</h2>
+      <div id="about-content"><!-- populated by app.js from content.js --></div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="section">
-      <div class="container">
-        <h2 class="section-title">Experience</h2>
-        <div id="experience-list" class="timeline"></div>
-      </div>
+    <!-- Education -->
+    <section id="education">
+      <h2 class="section-title">Education</h2>
+      <div id="education-list" class="timeline"><!-- populated by app.js --></div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section bg-light">
-      <div class="container">
-        <h2 class="section-title">Projects</h2>
-        <div id="projects-grid" class="projects-grid"></div>
-      </div>
+    <!-- Experience -->
+    <section id="experience">
+      <h2 class="section-title">Experience</h2>
+      <div id="experience-list" class="timeline"><!-- populated by app.js --></div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section">
-      <div class="container">
-        <h2 class="section-title">Skills</h2>
-        <div id="skills-content" class="skills-content"></div>
-      </div>
+    <!-- Projects (grid) -->
+    <section id="projects">
+      <h2 class="section-title">Projects</h2>
+      <div id="projects-grid" class="grid"><!-- populated by app.js (if CONTENT.projects) or projects-api.js --></div>
+      <p style="margin-top:1rem;">
+        <a class="btn" href="project.html">View all projects →</a>
+      </p>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section bg-light">
-      <div class="container">
-        <h2 class="section-title">Contact</h2>
-        <p>If you'd like to get in touch for collaborations, research opportunities, or just to say hello, feel free to reach out!</p>
-        <ul class="contact-list" id="contact-list">
-          <!-- Contact details will be inserted via JS -->
-        </ul>
-      </div>
+    <!-- Skills -->
+    <section id="skills">
+      <h2 class="section-title">Skills</h2>
+      <div id="skills-content" class="skills"><!-- populated by app.js --></div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2 class="section-title">Contact</h2>
+      <ul id="contact-list" class="contact-list"><!-- populated by app.js --></ul>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>
-        © <span id="year"></span> Sandip Gautam.
-        <a href="#home" style="margin-left:.5rem;">Back to top ↑</a>
-      </p>
-
-    </div>
+  <footer>
+    © <span id="year"></span> Sandip Gautam
+    <a href="#home" style="margin-left:.5rem;">Back to top ↑</a>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Data, then page logic -->
   <script src="js/content.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/content-normalize.js"></script>
   <script src="js/projects-api.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
