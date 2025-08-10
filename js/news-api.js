@@ -44,40 +44,10 @@ function parseFrontMatter(text) {
   const delimiter = '---';
   const parts = text.split(delimiter);
   if (parts.length < 3) return {};
-  const yaml = parts[1];
-  const body = parts.slice(2).join(delimiter).replace(/^\s+/, '');
-
-  const lines = yaml.replace(/\r\n?/g, '\n').split('\n');
-  const meta = {};
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (!line.trim() || line.trim().startsWith('#')) continue;
-
-    const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
-    if (!m) continue;
-
-    const key = m[1].trim();
-    let value = (m[2] ?? '').trim();
-
-    // Multiline scalar?
-    if (value === '' || value === '>' || value === '>-' || value === '|' || value === '|-') {
-      const baseIndent = line.match(/^\s*/)[0].length;
-      const style = value || '>'; // treat empty after ":" as folded by default
-      const blk = readBlockScalar(lines, i, baseIndent, style);
-      value = blk.value;
-      i = blk.nextIndex;
-    } else {
-      // Strip surrounding quotes if present
-      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-        value = value.slice(1, -1);
-      }
-    }
-
-    meta[key] = value;
-  }
-
-  meta.body = body.trim();
+  const yamlBlock = parts[1];
+  const body = parts.slice(2).join(delimiter).trim();
+  const meta = jsyaml.load(yamlBlock) || {};
+  meta.body = body;
   return meta;
 }
 
