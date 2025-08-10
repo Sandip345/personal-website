@@ -350,3 +350,104 @@ body {
     padding: 1rem;
   }
 }
+
+/* ===== UI polish additions ===== */
+
+/* Smooth in-page scrolling */
+html { scroll-behavior: smooth; }
+
+/* Better heading hierarchy */
+.section-title {
+  font-size: clamp(1.8rem, 2.5vw + 1rem, 2.4rem);
+  letter-spacing: .2px;
+}
+
+/* Nav: hover + active state (used by scrollspy below) */
+.nav-links li a {
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: var(--color-secondary);
+}
+.nav-links li a.active::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -6px;
+  width: 100%; height: 2px;
+  background: var(--color-secondary);
+  border-radius: 2px;
+}
+
+/* Ensure anchor targets aren’t hidden under sticky nav */
+section { scroll-margin-top: 80px; }
+
+/* Cards: a touch more separation */
+.project-card { border-radius: 10px; }
+.news-item { border-bottom: 1px solid var(--color-border); }
+
+/* News: preserve author’s line breaks */
+.news-item p { white-space: pre-line; }
+
+/* Meta text contrast & spacing */
+.news-meta { opacity: .85; }
+
+/* Buttons & links: visible keyboard focus */
+a, .btn, button {
+  outline: none;
+}
+a:focus-visible, .btn:focus-visible, button:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  border-radius: 4px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .hamburger span { transition: none !important; }
+}
+
+/* ===== Dark mode toggle ===== */
+
+/* Position the dark mode button on the right side of the header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* space between logo/nav and the button */
+  gap: 1rem;
+}
+
+/* If your main page uses a different header structure with nav-links: */
+header .nav-links { margin-left: auto; }
+
+/* Button style (from earlier step) */
+#dark-mode-toggle {
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-text);
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+#dark-mode-toggle:hover { background: var(--color-primary); color: #fff; }
+
+/* Dark mode variables (if not already added) */
+:root {
+  --color-background: #ffffff;
+  --color-text: #1c1c1c;
+  --color-primary: #0077cc;
+  --color-secondary: #ff6600;
+  --color-border: #e2e2e2;
+}
+body.dark-mode {
+  --color-background: #121212;
+  --color-text: #e4e4e4;
+  --color-primary: #66b2ff;
+  --color-secondary: #ff944d;
+  --color-border: #333333;
+}
+
+

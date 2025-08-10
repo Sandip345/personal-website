@@ -9,6 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <!-- Site styles -->
   <link rel="stylesheet" href="css/style.css" />
+  <button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+  <link rel="icon" href="images/placeholder.png" type="image/png" />
+  <meta property="og:title" content="Sandip Gautam | Personal Website">
+  <meta property="og:description" content="Graduate researcher in fluid dynamics. Projects, publications, news & contact.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sandipgtm.com.np/">
+  <meta property="og:image" content="images/placeholder.png">
+
 </head>
 <body>
   <nav class="navbar">
@@ -30,6 +38,9 @@
       </ul>
     </div>
   </nav>
+  <!-- Add this inside <header>, near your nav -->
+<button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+
 
   <!-- Hero Section -->
   <header id="home" class="hero">
@@ -98,7 +109,11 @@
 
   <footer class="footer">
     <div class="container">
-      <p>© <span id="year"></span> Sandip Gautam. All rights reserved.</p>
+      <p>
+        © <span id="year"></span> Sandip Gautam.
+        <a href="#home" style="margin-left:.5rem;">Back to top ↑</a>
+      </p>
+
     </div>
   </footer>
 

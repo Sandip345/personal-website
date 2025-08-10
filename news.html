@@ -6,6 +6,7 @@
   <title>News & Events | Sandip Gautam</title>
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  
   <style>
     body {
       background: var(--color-background);
@@ -35,11 +36,6 @@
       margin-bottom: 2rem;
       text-align: center;
     }
-    .news-item {
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--color-border);
-    }
     .news-item h2 {
       margin: 0;
       font-size: 1.4rem;
@@ -63,6 +59,7 @@
   <header>
     <a href="index.html" class="logo">&larr; Home</a>
   </header>
+  <button id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
   <main>
     <h1>News & Events</h1>
     <div id="news-list">
@@ -73,10 +70,9 @@
     © <span id="year"></span> Sandip Gautam
   </footer>
 
-  <!-- Add YAML parser -->
-  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-
   <script src="js/content.js"></script>
   <script src="js/news-api.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
