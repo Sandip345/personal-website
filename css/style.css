@@ -411,3 +411,28 @@ footer {
   -webkit-box-orient: initial !important;
 }
 
+#presentations { margin-top: 28px; }
+#presentations .section-title { margin-bottom: 12px; }
+
+#presentations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.presentation-item {
+  font-size: 1rem;
+  line-height: 1.6;
+  padding: 0;           /* no card */
+  margin: 0;
+  border: 0;
+}
+
+.presentation-item .p-title { font-weight: 600; }
+.presentation-item .p-where { color: var(--color-muted); }
+.presentation-item .p-date  { color: var(--color-muted); }
+
+

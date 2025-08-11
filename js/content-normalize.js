@@ -131,12 +131,7 @@
     ).filter(Boolean);
     if (list.length) normalizedSkills.push({ title: 'Test Scores', items: list });
   }
-  if (Array.isArray(C.presentations) && C.presentations.length) {
-    const list = C.presentations.map(p =>
-      [p.title, p.event, p.location, p.date].filter(Boolean).join(', ')
-    ).filter(Boolean);
-    if (list.length) normalizedSkills.push({ title: 'Presentations', items: list });
-  }
+  
 
   C.skills = normalizedSkills;
 

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   safeRun(tryRenderProjects); // single-column rows with full description
   safeRun(tryRenderSkills);
   safeRun(tryRenderContact);
-
+  safeRun(tryRenderPresentations); 
   // Footer year
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -317,6 +317,44 @@ function setupScrollspy() {
     // IntersectionObserver unsupported – skip silently
   }
 }
+
+function tryRenderPresentations() {
+  const C = window.CONTENT;
+  const host = document.getElementById('presentations-list');
+  if (!C || !host) return;
+
+  const items = Array.isArray(C.presentations) ? C.presentations : [];
+  host.innerHTML = '';
+
+  if (!items.length) {
+    // nothing to show; hide section
+    const sec = document.getElementById('presentations');
+    if (sec) sec.style.display = 'none';
+    return;
+  }
+
+  items.forEach(p => {
+    // your content.js uses {title, event, location, date}
+    const title = p.title || '';
+    const event = p.event || '';
+    const location = p.location || '';
+    const date = p.date || '';
+
+    const li = document.createElement('li');
+    li.className = 'presentation-item';
+
+    const line = [
+      title && `<span class="p-title">${title}</span>`,
+      event && location ? `<span class="p-where">${event}, ${location}</span>` :
+      (event || location) && `<span class="p-where">${event || location}</span>`,
+      date && `<span class="p-date">${date}</span>`
+    ].filter(Boolean).join(' — ');
+
+    li.innerHTML = line;
+    host.appendChild(li);
+  });
+}
+
 
 /* ------------------------- DARK MODE ------------------------- */
 function setupDarkMode() {
