@@ -176,7 +176,6 @@ window.CONTENT = {
       location: "University of New Hampshire",
       date: "March 12, 2025"
     }
-
     {
       title: "Free-surface response to counter-rotating vortex pairs",
       event: "Rocky Mountain Fluid Mechanics Symposium",
