@@ -337,3 +337,17 @@ footer {
   border: 1px solid var(--color-border);
   background: color-mix(in srgb, var(--color-primary) 8%, transparent);
 }
+
+/* Kill any old grid/tile styles that might still apply */
+#projects .project-card,
+#projects .card-content { display: none !important; }
+
+/* Ensure full description, no clamps */
+#projects .project-row__desc {
+  display: block !important;
+  overflow: visible !important;
+  white-space: pre-wrap;   /* preserves paragraphs & long lines */
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+}
