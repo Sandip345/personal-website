@@ -351,3 +351,63 @@ footer {
   line-clamp: unset !important;
   -webkit-box-orient: unset !important;
 }
+
+
+/* === Projects: single column, comfy spacing === */
+#projects .grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 24px !important;
+}
+
+/* Nuke legacy tile styles if any were left */
+#projects .project-card,
+#projects .card-content {
+  display: none !important;
+}
+
+/* New row card */
+#projects .project-row {
+  padding: 20px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-background);
+  box-shadow: var(--shadow);
+}
+
+/* Title, date, tags */
+#projects .project-row__title {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+  line-height: 1.35;
+}
+#projects .project-row__meta {
+  margin: 0 0 10px;
+  font-size: .95rem;
+  color: var(--color-muted);
+}
+#projects .project-row__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+#projects .project-row__tags .tag {
+  font-size: .85rem;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+/* Description — FORCE full text, never clamp */
+#projects .project-row__desc {
+  display: block !important;
+  overflow: visible !important;
+  text-overflow: initial !important;
+  white-space: pre-wrap !important;   /* keep paragraphs/line breaks */
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+}
+

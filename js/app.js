@@ -135,27 +135,30 @@ function buildTimelineItem({ title, where, when, details }) {
 /* ---------- Projects: single-column rows with FULL description ---------- */
 function tryRenderProjects() {
   const C = window.CONTENT;
-  if (!C) return;
-  const host = document.getElementById('projects-grid');
-  if (!host) return;
+  const host = document.getElementById('projects-grid'); // must exist in index.html
+  if (!C || !host) return;
 
   const projects = Array.isArray(C.projects) ? C.projects : [];
-  host.innerHTML = ''; // replace any old grid cards
+  console.log('[projects] rendering from app.js:', projects.length);
+  host.innerHTML = '';
+  host.dataset.renderedBy = 'app'; // debug: proves this ran
 
   projects.forEach(pj => {
     const title = pj.title || pj.name || 'Untitled Project';
     const period = pj.period || '';
-    const fullDesc = pj.longDescription || pj.description || '';
+    const fullDesc = pj.longDescription || pj.description || pj.body || '';
     const tagsArr = Array.isArray(pj.tags) ? pj.tags : [];
 
     const art = document.createElement('article');
     art.className = 'project-row';
 
+    // Title
     const h3 = document.createElement('h3');
     h3.className = 'project-row__title';
     h3.textContent = title;
     art.appendChild(h3);
 
+    // Date
     if (period) {
       const meta = document.createElement('div');
       meta.className = 'project-row__meta';
@@ -163,27 +166,31 @@ function tryRenderProjects() {
       art.appendChild(meta);
     }
 
-    if (fullDesc) {
-      const p = document.createElement('p');
-      p.className = 'project-row__desc';
-      p.textContent = fullDesc; // full description
-      art.appendChild(p);
-    }
-
+    // Tags
     if (tagsArr.length) {
       const tags = document.createElement('div');
       tags.className = 'project-row__tags';
       tagsArr.forEach(t => {
         const chip = document.createElement('span');
+        chip.className = 'tag';
         chip.textContent = t;
         tags.appendChild(chip);
       });
       art.appendChild(tags);
     }
 
+    // FULL description (no truncation)
+    if (fullDesc) {
+      const p = document.createElement('p');
+      p.className = 'project-row__desc';
+      p.textContent = fullDesc;
+      art.appendChild(p);
+    }
+
     host.appendChild(art);
   });
 }
+
 
 function tryRenderSkills() {
   const C = window.CONTENT;
