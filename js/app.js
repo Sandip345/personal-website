@@ -8,8 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   safeRun(tryRenderExperience);
   safeRun(tryRenderProjects); // single-column rows with full description
   safeRun(tryRenderSkills);
-  safeRun(tryRenderContact);
   safeRun(tryRenderPresentations); 
+  safeRun(tryRenderContact);
+  
   // Footer year
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
