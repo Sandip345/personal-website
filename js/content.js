@@ -176,6 +176,13 @@ window.CONTENT = {
       location: "University of New Hampshire",
       date: "March 12, 2025"
     }
+
+    {
+      title: "Free-surface response to counter-rotating vortex pairs",
+      event: "Rocky Mountain Fluid Mechanics Symposium",
+      location: "University of Colorado Boulder",
+      date: "April 8, 2025"
+    }
   ],
   // News and upcoming events. Each entry should include a title, date and
   // description. You can add more items or edit existing ones to update
