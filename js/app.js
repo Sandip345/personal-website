@@ -135,38 +135,50 @@ function buildTimelineItem({ title, where, when, details }) {
 /* ---------- Projects: single-column rows with FULL description ---------- */
 function tryRenderProjects() {
   const C = window.CONTENT;
-  const host = document.getElementById('projects-grid'); // must exist in index.html
+  const host = document.getElementById('projects-grid');
   if (!C || !host) return;
 
   const projects = Array.isArray(C.projects) ? C.projects : [];
-  console.log('[projects] rendering from app.js:', projects.length);
-  host.innerHTML = '';
-  host.dataset.renderedBy = 'app'; // debug: proves this ran
+  console.log('[projects] rendering from app.js, count =', projects.length);
 
-  projects.forEach(pj => {
-    const title = pj.title || pj.name || 'Untitled Project';
-    const period = pj.period || '';
-    const fullDesc = pj.longDescription || pj.description || pj.body || '';
+  host.innerHTML = '';
+  host.dataset.renderedBy = 'app';
+
+  const slugify = (s) =>
+    String(s || '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+  // show ALL projects (no limit)
+  projects.forEach((pj, idx) => {
+    const title   = pj.title || pj.name || 'Untitled Project';
+    const period  = pj.period || '';
+    const fullDesc= pj.longDescription || pj.description || pj.body || '';
     const tagsArr = Array.isArray(pj.tags) ? pj.tags : [];
 
-    const art = document.createElement('article');
-    art.className = 'project-row';
+    const slug = pj.slug || slugify(title);
+    const href = pj.link || `project.html?slug=${encodeURIComponent(slug)}`;
 
-    // Title
+    const card = document.createElement('a');
+    card.className = 'project-row';
+    card.href = href;
+    card.setAttribute('aria-label', title);
+    card.dataset.index = String(idx);
+
     const h3 = document.createElement('h3');
     h3.className = 'project-row__title';
     h3.textContent = title;
-    art.appendChild(h3);
+    card.appendChild(h3);
 
-    // Date
     if (period) {
       const meta = document.createElement('div');
       meta.className = 'project-row__meta';
       meta.textContent = period;
-      art.appendChild(meta);
+      card.appendChild(meta);
     }
 
-    // Tags
     if (tagsArr.length) {
       const tags = document.createElement('div');
       tags.className = 'project-row__tags';
@@ -176,20 +188,20 @@ function tryRenderProjects() {
         chip.textContent = t;
         tags.appendChild(chip);
       });
-      art.appendChild(tags);
+      card.appendChild(tags);
     }
 
-    // FULL description (no truncation)
     if (fullDesc) {
       const p = document.createElement('p');
       p.className = 'project-row__desc';
-      p.textContent = fullDesc;
-      art.appendChild(p);
+      p.textContent = fullDesc;         // full text, no truncation
+      card.appendChild(p);
     }
 
-    host.appendChild(art);
+    host.appendChild(card);
   });
 }
+
 
 
 function tryRenderSkills() {
