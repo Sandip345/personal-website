@@ -157,7 +157,7 @@ function tryRenderProjects() {
 
   // Recursively list markdown files (supports subfolders later if you want)
   const listFiles = async (path) => {
-    const api = `https://api.github.com/repos/${REPO}/contents/${encodeURIComponent(path)}`;
+    const api = `https://api.github.com/repos/${REPO}/contents/${path}`;
     const entries = await getJSON(api);
     if (!Array.isArray(entries)) return [];
     const out = [];
