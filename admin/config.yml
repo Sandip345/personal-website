@@ -1,0 +1,38 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    folder: "content/projects"
+    create: true
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "period", label: "Period", widget: "string" }
+      - { name: "description", label: "Description", widget: "text" }
+      - { name: "tags", label: "Tags", widget: "list", field: { label: "Tag", name: "tag", widget: "string" } }
+      - { name: "body", label: "Body", widget: "markdown" }
+  - name: "news"
+    label: "News & Events"
+    label_singular: "News"
+    folder: "content/news"
+    create: true
+    fields:
+      # Long titles are fine; use "text" if you want multi-line editing, 
+      # otherwise "string" is a single line but can be long.
+      - { name: "title", label: "Title", widget: "string", required: true }
+
+      # Optional description
+      - { name: "description", label: "Description", widget: "text", required: false }
+
+      # Date you can choose freely. By default Netlify CMS shows today's date,
+      # but you can change it. If you want it NOT to auto-fill, keep default: "".
+      - { name: "date", label: "Date", widget: "date", format: "MMMM D, YYYY", required: true, default: "" }
+
+      # Location (keep required true if you always want one)
+      - { name: "location", label: "Location", widget: "string", required: true }

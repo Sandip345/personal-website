@@ -1,0 +1,82 @@
+[33mf4c3c9e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m updating UI
+[33m796b479[m Update News “visiting-research-collaborators-at-montana-state-university-1”
+[33m77640ee[m Update News “presenting-at-the-rocky-mountain-fluid-symposium”
+[33m7fc98e7[m Delete News “oral-presentation-at-american-physical-society-division-of-fluid-dynamics”
+[33mf08079e[m Create News “oral-presentation-at-american-physical-society-division-of-fluid-dynamics-1”
+[33m8cf9419[m Delete News “presenting-at-the-rocky-mountain-fluid-symposium-2”
+[33m0d4ed72[m Create News “presenting-at-the-rocky-mountain-fluid-symposium”
+[33mb571d0f[m Update News “presenting-at-the-rocky-mountain-fluid-symposium-2”
+[33m3ad6f60[m Update News “oral-presentation-at-american-physical-society-division-of-fluid-dynamics”
+[33m37712dd[m Update News “presenting-at-the-rocky-mountain-fluid-symposium-2”
+[33mb4c7823[m Update News “presenting-at-the-rocky-mountain-fluid-symposium-2”
+[33m060ceb8[m Delete News “presenting-at-the-rocky-mountain-fluid-symposium-1”
+[33m6a83263[m Delete News “oral-presentation-at-american-physical-society-division-of-fluid-dynamics-1”
+[33m99a37d3[m Delete News “fdsadf”
+[33m6ea3f4f[m Delete News “presenting-at-the-rocky-mountain-fluid-symposium”
+[33m9037014[m Create News “presenting-at-the-rocky-mountain-fluid-symposium-2”
+[33mf65648d[m Update News “visiting-research-collaborators-at-montana-state-university-1”
+[33me23a75b[m Delete News “visiting-research-collaborators-at-montana-state-university”
+[33mce8ecbb[m Create News “visiting-research-collaborators-at-montana-state-university-1”
+[33m2c95441[m show all news fix
+[33mc434efa[m Create News “presenting-at-the-rocky-mountain-fluid-symposium”
+[33m2317ec6[m update description
+[33ma51cb10[m Create News “oral-presentation-at-american-physical-society-division-of-fluid-dynamics-1”
+[33md248660[m Update News “oral-presentation-at-american-physical-society-division-of-fluid-dynamics”
+[33md106198[m update description
+[33mea5d9c1[m description correction
+[33macc3ab5[m Create News “fdsadf”
+[33m5afd93a[m correct description
+[33mb474fa1[m longer description fix
+[33mad0c859[m Merge branch 'main' of https://github.com/Sandip345/personal-website
+[33m7a8c8f2[m Description longer
+[33mca0541a[m Update News “presenting-at-the-rocky-mountain-fluid-symposium-1”
+[33me9c6ea5[m Delete News “presenting-at-the-rocky-mountain-fluid-symposium”
+[33m11d6598[m news section time format and description update
+[33m396b0ba[m random test file
+[33m840486f[m Add files via upload
+[33m6342d72[m Add files via upload
+[33m4c60f0d[m Add files via upload
+[33m6b33a79[m Delete News “presenting-at-the-rocky-mountain-fluid-symposium”
+[33m2ac00d5[m Delete News “dfasdf”
+[33mb5b8147[m Create News “dfasdf”
+[33mf3deebf[m Update config.yml
+[33m5b762d0[m Update HTML files to load dynamic scripts (news-api.js, projects-api.js, project-api.js)
+[33m2c28110[m Add dynamic script for news page (news-api.js)
+[33m6f573ce[m Add dynamic script for projects grid (projects-api.js)
+[33m14788b4[m Add dynamic script for project detail pages (project-api.js)
+[33m0c6730d[m Create News “oral-presentation-at-american-physical-society-division-of-fluid-dynamics”
+[33m8a47c1f[m Create News “visiting-research-collaborators-at-montana-state-university”
+[33mc11bd0b[m Create News “presenting-at-the-rocky-mountain-fluid-symposium-1”
+[33m60b68aa[m Delete Project “axial-flow-compressor-design-1”
+[33m9e34756[m Create Project “quadcopter-design-fabrication”
+[33mc9e211b[m Create Project “aircraft-exhaust-stack-trolley”
+[33mc8e73bb[m Create Project “lift-drag-data-acquisition”
+[33m2d7490b[m Create Project “finite-element-heat-conduction”
+[33m8b48e8e[m Create Project “bijuli-–-powerline-inspection-uav”
+[33m5eaf652[m Create News “presenting-at-the-rocky-mountain-fluid-symposium”
+[33m9fe1f29[m Create Project “axial-flow-compressor-design-1”
+[33m66bfc95[m Create Project “axial-flow-compressor-design”
+[33m95e1c64[m Update content.js
+[33ma02121b[m Update content.js
+[33m4d88ff6[m Update content.js
+[33m30a1c11[m Update content.js
+[33mb791c50[m Update index.html
+[33me71bb1e[m Update index.html
+[33m18854db[m Create config.yml
+[33m161f05b[m Create index.html
+[33m924feb1[m Rename placeholder.png to images/placeholder.png
+[33m7582d5c[m Add files via upload
+[33m83a41fd[m Rename hero-bg.png to assets/hero-bg.png
+[33m408257a[m Add files via upload
+[33m0b44628[m Rename project.js to js/project.js
+[33mdf3876c[m Rename news.js to js/news.js
+[33mca7dd26[m Rename content.js to js/content.js
+[33m0ed07cf[m Rename app.js to js/app.js
+[33mef1e692[m Add files via upload
+[33m392dfa3[m Rename style.css to css/style.css
+[33mcdc8888[m Add files via upload
+[33m717ac91[m Add files via upload
+[33ma490cfd[m Add files via upload
+[33m75a3ae2[m Add files via upload
+[33m466df31[m Add files via upload
+[33m25fab5e[m Initial commit
