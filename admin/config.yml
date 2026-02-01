@@ -15,6 +15,12 @@ collections:
       - { name: "title", label: "Title", widget: "string" }
       - { name: "period", label: "Period", widget: "string" }
       - { name: "description", label: "Description", widget: "text" }
+      - { name: "cover_image", label: "Cover Image", widget: "image", required: false }
+      - name: "gallery"
+        label: "Gallery Images"
+        widget: "list"
+        required: false
+        field: { name: "image", label: "Image", widget: "image" }
       - { name: "tags", label: "Tags", widget: "list", field: { label: "Tag", name: "tag", widget: "string" } }
       - { name: "body", label: "Body", widget: "markdown" }
   - name: "news"

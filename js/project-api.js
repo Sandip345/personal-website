@@ -137,7 +137,7 @@ function formatTags(tags) {
 }
 
 /* ---------- render ---------- */
-function renderProject({ title, period, tags, description, body }) {
+function renderProject({ title, period, tags, description, cover_image, gallery, body }) {
   const host = document.getElementById("project-details");
   if (!host) return;
   host.innerHTML = "";
@@ -149,6 +149,15 @@ function renderProject({ title, period, tags, description, body }) {
   h1.className = "section-title";
   h1.textContent = title || "(Untitled Project)";
   article.appendChild(h1);
+
+  if (cover_image) {
+    const hero = document.createElement('img');
+    hero.className = 'project-hero';
+    hero.src = cover_image;
+    hero.alt = title ? `${title} cover image` : 'Project cover image';
+    hero.loading = 'lazy';
+    article.appendChild(hero);
+  }
 
   const metaBits = [];
   if (period) metaBits.push(period);
@@ -179,6 +188,21 @@ function renderProject({ title, period, tags, description, body }) {
   }
   article.appendChild(bodyEl);
 
+  const galleryImages = Array.isArray(gallery) ? gallery : [];
+  if (galleryImages.length) {
+    const g = document.createElement('div');
+    g.className = 'project-gallery';
+    galleryImages.forEach((src) => {
+      if (!src) return;
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = title ? `${title} image` : 'Project image';
+      img.loading = 'lazy';
+      g.appendChild(img);
+    });
+    article.appendChild(g);
+  }
+
   host.appendChild(article);
 }
 
@@ -207,6 +231,8 @@ async function loadProject() {
       period: (meta.period || "").trim(),
       tags: meta.tags || [],
       description: (meta.description || "").trim(),
+      cover_image: meta.cover_image || '',
+      gallery: meta.gallery || [],
       body: body || ""
     });
   } catch (e) {

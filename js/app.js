@@ -133,73 +133,136 @@ function buildTimelineItem({ title, where, when, details }) {
   return div;
 }
 
-/* ---------- Projects: single-column rows with FULL description ---------- */
+/* ---------- Projects: render from Markdown in content/projects (Netlify CMS) ---------- */
 function tryRenderProjects() {
-  const C = window.CONTENT;
   const host = document.getElementById('projects-grid');
-  if (!C || !host) return;
+  if (!host) return;
 
-  const projects = Array.isArray(C.projects) ? C.projects : [];
-  console.log('[projects] rendering from app.js, count =', projects.length);
+  // IMPORTANT: this points to your GitHub repo (used as a read API).
+  // If you rename the repo/user, update this one string.
+  const REPO = 'Sandip345/personal-website';
+  const ROOT = 'content/projects';
 
-  host.innerHTML = '';
-  host.dataset.renderedBy = 'app';
+  const bust = (url) => `${url}${url.includes('?') ? '&' : '?'}ts=${Date.now()}`;
+  const getJSON = async (url) => {
+    const res = await fetch(bust(url), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+    return res.json();
+  };
+  const getText = async (url) => {
+    const res = await fetch(bust(url), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+    return res.text();
+  };
 
-  const slugify = (s) =>
-    String(s || '')
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-
-  // show ALL projects (no limit)
-  projects.forEach((pj, idx) => {
-    const title   = pj.title || pj.name || 'Untitled Project';
-    const period  = pj.period || '';
-    const fullDesc= pj.longDescription || pj.description || pj.body || '';
-    const tagsArr = Array.isArray(pj.tags) ? pj.tags : [];
-
-    const slug = pj.slug || slugify(title);
-    const href = pj.link || `project.html?slug=${encodeURIComponent(slug)}`;
-
-    const card = document.createElement('a');
-    card.className = 'project-row';
-    card.href = href;
-    card.setAttribute('aria-label', title);
-    card.dataset.index = String(idx);
-
-    const h3 = document.createElement('h3');
-    h3.className = 'project-row__title';
-    h3.textContent = title;
-    card.appendChild(h3);
-
-    if (period) {
-      const meta = document.createElement('div');
-      meta.className = 'project-row__meta';
-      meta.textContent = period;
-      card.appendChild(meta);
+  // Recursively list markdown files (supports subfolders later if you want)
+  const listFiles = async (path) => {
+    const api = `https://api.github.com/repos/${REPO}/contents/${encodeURIComponent(path)}`;
+    const entries = await getJSON(api);
+    if (!Array.isArray(entries)) return [];
+    const out = [];
+    for (const it of entries) {
+      if (it.type === 'file' && it.name.toLowerCase().endsWith('.md')) out.push(it);
+      else if (it.type === 'dir') out.push(...(await listFiles(`${path}/${it.name}`)));
     }
+    return out;
+  };
 
-    if (tagsArr.length) {
-      const tags = document.createElement('div');
-      tags.className = 'project-row__tags';
-      tagsArr.forEach(t => {
-        const chip = document.createElement('span');
-        chip.className = 'tag';
-        chip.textContent = t;
-        tags.appendChild(chip);
-      });
-      card.appendChild(tags);
+  const parseFrontMatter = (text) => {
+    const parts = String(text || '').split('---');
+    if (parts.length < 3) return { meta: {}, body: text };
+    const yamlBlock = parts[1];
+    const body = parts.slice(2).join('---').trim();
+    let meta = {};
+    if (window.jsyaml && typeof window.jsyaml.load === 'function') {
+      try { meta = window.jsyaml.load(yamlBlock) || {}; } catch { meta = {}; }
     }
+    return { meta, body };
+  };
 
-    if (fullDesc) {
-      const p = document.createElement('p');
-      p.className = 'project-row__desc';
-      p.textContent = fullDesc;         // full text, no truncation
-      card.appendChild(p);
-    }
+  const toArray = (x) => (Array.isArray(x) ? x : (x ? [x] : []));
 
-    host.appendChild(card);
+  const render = (projects) => {
+    host.innerHTML = '';
+    host.dataset.renderedBy = 'cms';
+
+    projects.forEach(pj => {
+      const link = document.createElement('a');
+      link.className = 'project-card';
+      link.href = `project.html?slug=${encodeURIComponent(pj.slug)}`;
+      link.style.textDecoration = 'none';
+      link.style.color = 'inherit';
+
+      if (pj.cover_image) {
+        const img = document.createElement('img');
+        img.src = pj.cover_image;
+        img.alt = pj.title || 'Project image';
+        img.loading = 'lazy';
+        link.appendChild(img);
+      }
+
+      const content = document.createElement('div');
+      content.className = 'card-content';
+
+      const h3 = document.createElement('h3');
+      h3.textContent = pj.title || 'Untitled Project';
+      content.appendChild(h3);
+
+      if (pj.period) {
+        const meta = document.createElement('div');
+        meta.className = 'project-card__meta';
+        meta.textContent = pj.period;
+        content.appendChild(meta);
+      }
+
+      if (pj.description) {
+        const p = document.createElement('p');
+        p.textContent = pj.description;
+        content.appendChild(p);
+      }
+
+      const tags = toArray(pj.tags);
+      if (tags.length) {
+        const tagWrap = document.createElement('div');
+        tagWrap.className = 'tags';
+        tags.forEach(t => {
+          const chip = document.createElement('span');
+          chip.textContent = String(t);
+          tagWrap.appendChild(chip);
+        });
+        content.appendChild(tagWrap);
+      }
+
+      link.appendChild(content);
+      host.appendChild(link);
+    });
+  };
+
+  (async () => {
+    // If js-yaml isn't loaded yet, we still render but without metadata.
+    host.innerHTML = '<p>Loading projects…</p>';
+
+    const files = await listFiles(ROOT);
+    const items = await Promise.all(files.map(async (file) => {
+      const raw = await getText(file.download_url);
+      const { meta } = parseFrontMatter(raw);
+      const slug = file.name.replace(/\.md$/i, '');
+      return {
+        slug,
+        title: meta.title || '',
+        period: meta.period || '',
+        description: meta.description || '',
+        cover_image: meta.cover_image || '',
+        tags: meta.tags || []
+      };
+    }));
+
+    // Sort by period string (optional) — if you add a "date" later, switch to Date sorting.
+    items.sort((a, b) => String(b.period).localeCompare(String(a.period)));
+    render(items);
+  })().catch((e) => {
+    console.error('Failed to load projects from content/projects:', e);
+    host.innerHTML = '<p>Could not load projects right now.</p>';
   });
 }
 
