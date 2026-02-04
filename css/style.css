@@ -391,9 +391,7 @@ footer {
   background: color-mix(in srgb, var(--color-primary) 8%, transparent);
 }
 
-/* Kill any old grid/tile styles that might still apply */
-#projects .project-card,
-#projects .card-content { display: none !important; }
+/* Project cards are now displayed */
 
 /* Ensure full description, no clamps */
 #projects .project-row__desc {
@@ -413,11 +411,7 @@ footer {
   gap: 24px !important;
 }
 
-/* Nuke legacy tile styles if any were left */
-#projects .project-card,
-#projects .card-content {
-  display: none !important;
-}
+/* Project cards styling retained */
 
 /* New row card */
 #projects .project-row {

@@ -138,53 +138,11 @@ function tryRenderProjects() {
   const host = document.getElementById('projects-grid');
   if (!host) return;
 
-  // IMPORTANT: this points to your GitHub repo (used as a read API).
-  // If you rename the repo/user, update this one string.
-  const REPO = 'Sandip345/personal-website';
-  const ROOT = 'content/projects';
-
-  const bust = (url) => `${url}${url.includes('?') ? '&' : '?'}ts=${Date.now()}`;
-  const getJSON = async (url) => {
-    const res = await fetch(bust(url), { cache: 'no-store' });
-    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
-    return res.json();
-  };
-  const getText = async (url) => {
-    const res = await fetch(bust(url), { cache: 'no-store' });
-    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
-    return res.text();
-  };
-
-  // Recursively list markdown files (supports subfolders later if you want)
-  const listFiles = async (path) => {
-    const api = `https://api.github.com/repos/${REPO}/contents/${path}`;
-    const entries = await getJSON(api);
-    if (!Array.isArray(entries)) return [];
-    const out = [];
-    for (const it of entries) {
-      if (it.type === 'file' && it.name.toLowerCase().endsWith('.md')) out.push(it);
-      else if (it.type === 'dir') out.push(...(await listFiles(`${path}/${it.name}`)));
-    }
-    return out;
-  };
-
-  const parseFrontMatter = (text) => {
-    const parts = String(text || '').split('---');
-    if (parts.length < 3) return { meta: {}, body: text };
-    const yamlBlock = parts[1];
-    const body = parts.slice(2).join('---').trim();
-    let meta = {};
-    if (window.jsyaml && typeof window.jsyaml.load === 'function') {
-      try { meta = window.jsyaml.load(yamlBlock) || {}; } catch { meta = {}; }
-    }
-    return { meta, body };
-  };
-
   const toArray = (x) => (Array.isArray(x) ? x : (x ? [x] : []));
 
   const render = (projects) => {
     host.innerHTML = '';
-    host.dataset.renderedBy = 'cms';
+    host.dataset.renderedBy = 'content';
 
     projects.forEach(pj => {
       const link = document.createElement('a');
@@ -193,10 +151,10 @@ function tryRenderProjects() {
       link.style.textDecoration = 'none';
       link.style.color = 'inherit';
 
-      if (pj.cover_image) {
+      if (pj.cover_image || pj.image) {
         const img = document.createElement('img');
-        img.src = pj.cover_image;
-        img.alt = pj.title || 'Project image';
+        img.src = pj.cover_image || pj.image;
+        img.alt = pj.title || pj.name || 'Project image';
         img.loading = 'lazy';
         link.appendChild(img);
       }
@@ -205,7 +163,7 @@ function tryRenderProjects() {
       content.className = 'card-content';
 
       const h3 = document.createElement('h3');
-      h3.textContent = pj.title || 'Untitled Project';
+      h3.textContent = pj.title || pj.name || 'Untitled Project';
       content.appendChild(h3);
 
       if (pj.period) {
@@ -238,8 +196,62 @@ function tryRenderProjects() {
     });
   };
 
+  // Try to use local content from window.CONTENT first
+  const C = window.CONTENT;
+  if (C && Array.isArray(C.projects) && C.projects.length > 0) {
+    const items = C.projects.map(proj => ({
+      slug: (proj.name || proj.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      title: proj.name || proj.title || '',
+      period: proj.period || '',
+      description: proj.description || '',
+      cover_image: proj.image || proj.cover_image || '',
+      tags: proj.tags || []
+    }));
+    render(items);
+    return;
+  }
+
+  // Fallback: Try to load from GitHub API if local content is not available
+  const REPO = 'Sandip345/personal-website';
+  const ROOT = 'content/projects';
+
+  const bust = (url) => `${url}${url.includes('?') ? '&' : '?'}ts=${Date.now()}`;
+  const getJSON = async (url) => {
+    const res = await fetch(bust(url), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+    return res.json();
+  };
+  const getText = async (url) => {
+    const res = await fetch(bust(url), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+    return res.text();
+  };
+
+  const listFiles = async (path) => {
+    const api = `https://api.github.com/repos/${REPO}/contents/${path}`;
+    const entries = await getJSON(api);
+    if (!Array.isArray(entries)) return [];
+    const out = [];
+    for (const it of entries) {
+      if (it.type === 'file' && it.name.toLowerCase().endsWith('.md')) out.push(it);
+      else if (it.type === 'dir') out.push(...(await listFiles(`${path}/${it.name}`)));
+    }
+    return out;
+  };
+
+  const parseFrontMatter = (text) => {
+    const parts = String(text || '').split('---');
+    if (parts.length < 3) return { meta: {}, body: text };
+    const yamlBlock = parts[1];
+    const body = parts.slice(2).join('---').trim();
+    let meta = {};
+    if (window.jsyaml && typeof window.jsyaml.load === 'function') {
+      try { meta = window.jsyaml.load(yamlBlock) || {}; } catch { meta = {}; }
+    }
+    return { meta, body };
+  };
+
   (async () => {
-    // If js-yaml isn't loaded yet, we still render but without metadata.
     host.innerHTML = '<p>Loading projects…</p>';
 
     const files = await listFiles(ROOT);
@@ -257,7 +269,6 @@ function tryRenderProjects() {
       };
     }));
 
-    // Sort by period string (optional) — if you add a "date" later, switch to Date sorting.
     items.sort((a, b) => String(b.period).localeCompare(String(a.period)));
     render(items);
   })().catch((e) => {
