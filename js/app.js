@@ -139,6 +139,11 @@ function tryRenderProjects() {
   if (!host) return;
 
   const toArray = (x) => (Array.isArray(x) ? x : (x ? [x] : []));
+  
+  // Helper function to generate consistent slugs from project names/titles
+  const generateSlug = (name) => {
+    return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  };
 
   const render = (projects) => {
     host.innerHTML = '';
@@ -151,10 +156,10 @@ function tryRenderProjects() {
       link.style.textDecoration = 'none';
       link.style.color = 'inherit';
 
-      if (pj.cover_image || pj.image) {
+      if (pj.cover_image) {
         const img = document.createElement('img');
-        img.src = pj.cover_image || pj.image;
-        img.alt = pj.title || pj.name || 'Project image';
+        img.src = pj.cover_image;
+        img.alt = pj.title || 'Project image';
         img.loading = 'lazy';
         link.appendChild(img);
       }
@@ -163,7 +168,7 @@ function tryRenderProjects() {
       content.className = 'card-content';
 
       const h3 = document.createElement('h3');
-      h3.textContent = pj.title || pj.name || 'Untitled Project';
+      h3.textContent = pj.title || 'Untitled Project';
       content.appendChild(h3);
 
       if (pj.period) {
@@ -200,7 +205,7 @@ function tryRenderProjects() {
   const C = window.CONTENT;
   if (C && Array.isArray(C.projects) && C.projects.length > 0) {
     const items = C.projects.map(proj => ({
-      slug: (proj.name || proj.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      slug: generateSlug(proj.name || proj.title),
       title: proj.name || proj.title || '',
       period: proj.period || '',
       description: proj.description || '',
